@@ -11,13 +11,15 @@ let cube = {
 }
 
 let map = {
-    x: 0,
-    y: 0,
+    x: 100,
+    y: 100,
     width: 470,
     height: 470,
     color: '#f5f5f5',
-    borderColor: '#f1f1f1',
+    borderСolor: 'black',
+    
 }
 
+spawn(map,cube);
 renderMap(map);
-renderCube(cube);
+renderCube(spawn(map,cube));

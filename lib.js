@@ -2,53 +2,58 @@ document.onkeydown = checkButton;
 
 function checkButton(event) {
 
-    let cubeRight = cube.x+cube.width;
-    let cubeDown = cube.y+cube.height;
-    let mapDown = map.y+map.height;
-    let mapRight = map.x+map.width;
+    let cubeRight = cube.x + cube.width;
+    let cubeBottom = cube.y + cube.height;
 
-    if (event.keyCode === 37){
+    let mapRight = map.x + map.width;
+    let mapBottom = map.y + map.height;
+
+    if (event.keyCode === 37) {
         console.log("ArrowLeft");
-        if (cube.x!=map.x) {
-            if ((cube.x-map.x)<cube.step) {
-                cube.x -= (cube.x-map.x);
+        if (map.x < cube.x) {
+            if ((cube.x - map.x) < cube.step) {
+                cube.x -= cube.x - map.x;
             }
+
             else {
                 cube.x -= cube.step;
             }
         }
     }
 
-    if (event.keyCode === 39){
-        console.log("ArrowRight");
-        if (cubeRight < mapRight) {
-            if ((mapRight-cubeRight) < cube.step){
-                cube.x += mapRight - cubeRight;
-            }
-            else {
-                cube.x += cube.step;
-            }
-        }
-    }
-
-    if (event.keyCode === 38){
+    if (event.keyCode === 38) {
         console.log("ArrowUp");
-        if (cube.y!=map.y) {
-            if ((cube.y-map.y)<cube.step) {
-                cube.y -= (cube.y-map.y);
+        if (map.y < cube.y) {
+            if ((cube.y - map.y) < cube.step) {
+                cube.y -= cube.y - map.y;
             }
+
             else {
                 cube.y -= cube.step;
             }
         }
     }
 
-    if (event.keyCode === 40){
-        console.log("ArrowDown");
-        if (cubeDown < mapDown) {
-            if ((mapDown-cubeDown) < cube.step){
-                cube.y += mapDown - cubeDown;
+    if (event.keyCode === 39) {
+        console.log("ArrowRight");
+        if (cubeRight < mapRight) {
+            if ((mapRight - cubeRight) < cube.step) {
+                cube.x += mapRight - cubeRight;
             }
+
+            else {
+                cube.x += cube.step;
+            }
+        }
+    }
+
+    if (event.keyCode === 40) {
+        console.log("ArrowDown");
+        if (cubeBottom < mapBottom) {
+            if ((mapBottom - cubeBottom) < cube.step) {
+                cube.y += mapBottom - cubeBottom;
+            }
+
             else {
                 cube.y += cube.step;
             }
@@ -56,7 +61,6 @@ function checkButton(event) {
     }
 
     renderCube(cube);
-
 }
 
 function renderCube(cube) {
@@ -74,17 +78,26 @@ function renderMap(map) {
     document.getElementById('map').style.width = map.width + 'px';
     document.getElementById('map').style.height = map.height + 'px';
     document.getElementById('map').style.backgroundColor = map.color;
+    // document.getElementById('map').style.border = '2px solid ' + map.border;
 }
 
-function spawn(map,cube) {
-    let minX = map.x;
-    let minY = map.y;
-    let maxX = map.x + map.width - cube.width;
-    let maxY = map.y + map.height - cube.height;
+function spawnCube(map, cube) {
 
+    let mapMinX = map.x;
+    let mapMaxX = map.x + map.width - cube.width;
 
-    cube.x = Math.round(minX + Math.random() * (maxX - minX));
-    cube.y = Math.round(minY + Math.random() * (maxY - minY));
+    let mapMinY = map.y;
+    let mapMaxY = map.y + map.height - cube.height;
+
+    cube.x = Math.round(
+        mapMinX + 
+        Math.random() * (mapMaxX - mapMinX)
+        );
+    cube.y = Math.round(
+        mapMinY + 
+        Math.random() * (mapMaxY - mapMinY)
+        );
+
     return cube;
 }
 
@@ -126,6 +139,18 @@ function renderBuff(buff) {
     document.getElementById('buff_' + buff.id).style.backgroundColor = buff.color;
 }
 
-function timeTick() {
+function timeTike() {
     console.log(new Date().getSeconds());
+    buffsLogic();
+    botsLogic();
+}
+
+function buffsLogic(game) {
+    console.log(game.plusCounter());
+    renderBuffs(game.getBuffs());
+}
+
+function botsLogic(game) { 
+    console.log(game.plusCounter());
+    renderBots(game.getBots());
 }
